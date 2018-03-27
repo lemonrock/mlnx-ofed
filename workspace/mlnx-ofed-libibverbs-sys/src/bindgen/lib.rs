@@ -20,14 +20,20 @@ use ::std::hash::Hash;
 use ::std::hash::Hasher;
 use ::std::cmp::PartialEq;
 use ::std::cmp::Eq;
+use ::std::slice::from_raw_parts;
+use ::std::slice::from_raw_parts_mut;
 use ::libc::c_char;
 use ::libc::c_int;
 use ::libc::c_uint;
 use ::libc::c_void;
 
+use ::libc::__s32;
+use ::libc::__u8;
+use ::libc::__u16;
+use ::libc::__u32;
+use ::libc::__u64;
 use ::libc::pthread_mutex_t;
 use ::libc::pthread_cond_t;
-
 #[link(name = "ibverbs", kind = "static-nobundle")]
 extern "C"
 {

@@ -3,8 +3,26 @@
 
 
 #[repr(C)]
-#[derive(Debug, Copy, Clone)]
 pub struct ibv_exp_peer_abort_peek
 {
-	_unused: [u8; 0],
+	pub peek_id: u64,
+	pub comp_mask: u32,
+}
+
+impl Default for ibv_exp_peer_abort_peek
+{
+	#[inline(always)]
+	fn default() -> Self
+	{
+		unsafe { zeroed() }
+	}
+}
+
+impl Debug for ibv_exp_peer_abort_peek
+{
+	#[inline(always)]
+	fn fmt(&self, f: &mut Formatter) -> Result
+	{
+		write!(f, "ibv_exp_peer_abort_peek {{  }}")
+	}
 }

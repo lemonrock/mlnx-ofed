@@ -3,8 +3,27 @@
 
 
 #[repr(C)]
-#[derive(Debug, Copy, Clone)]
 pub struct ibv_exp_rollback_ctx
 {
-	_unused: [u8; 0],
+	pub rollback_id: u64,
+	pub flags: u32,
+	pub comp_mask: u32,
+}
+
+impl Default for ibv_exp_rollback_ctx
+{
+	#[inline(always)]
+	fn default() -> Self
+	{
+		unsafe { zeroed() }
+	}
+}
+
+impl Debug for ibv_exp_rollback_ctx
+{
+	#[inline(always)]
+	fn fmt(&self, f: &mut Formatter) -> Result
+	{
+		write!(f, "ibv_exp_rollback_ctx {{  }}")
+	}
 }

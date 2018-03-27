@@ -1,3 +1,6 @@
 ibv_.*
 ll_.*
 verbs_.*
+ex_hdr
+ib_exp_.*
+peer_op_.*

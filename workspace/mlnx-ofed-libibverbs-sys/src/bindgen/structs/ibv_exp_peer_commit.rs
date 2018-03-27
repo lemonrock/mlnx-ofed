@@ -3,8 +3,28 @@
 
 
 #[repr(C)]
-#[derive(Debug, Copy, Clone)]
 pub struct ibv_exp_peer_commit
 {
-	_unused: [u8; 0],
+	pub storage: *mut peer_op_wr,
+	pub entries: u32,
+	pub rollback_id: u64,
+	pub comp_mask: u32,
+}
+
+impl Default for ibv_exp_peer_commit
+{
+	#[inline(always)]
+	fn default() -> Self
+	{
+		unsafe { zeroed() }
+	}
+}
+
+impl Debug for ibv_exp_peer_commit
+{
+	#[inline(always)]
+	fn fmt(&self, f: &mut Formatter) -> Result
+	{
+		write!(f, "ibv_exp_peer_commit {{ storage: {:?} }}", self.storage)
+	}
 }

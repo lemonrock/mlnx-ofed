@@ -3,8 +3,30 @@
 
 
 #[repr(C)]
-#[derive(Debug, Copy, Clone)]
 pub struct ibv_exp_peer_peek
 {
-	_unused: [u8; 0],
+	pub storage: *mut peer_op_wr,
+	pub entries: u32,
+	pub whence: u32,
+	pub offset: u32,
+	pub peek_id: u64,
+	pub comp_mask: u32,
+}
+
+impl Default for ibv_exp_peer_peek
+{
+	#[inline(always)]
+	fn default() -> Self
+	{
+		unsafe { zeroed() }
+	}
+}
+
+impl Debug for ibv_exp_peer_peek
+{
+	#[inline(always)]
+	fn fmt(&self, f: &mut Formatter) -> Result
+	{
+		write!(f, "ibv_exp_peer_peek {{ storage: {:?} }}", self.storage)
+	}
 }

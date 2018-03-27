@@ -1,2 +1,9 @@
 mlx5_.*
-ibv_.*
+ibv_mlx5_.*
+general_data_hot
+data_seg_data
+ctrl_seg_data
+mpw_data
+general_data_warm
+odp_data
+mpw_data

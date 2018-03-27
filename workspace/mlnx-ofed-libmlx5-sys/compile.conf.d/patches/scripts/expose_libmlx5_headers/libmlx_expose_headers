@@ -1,14 +1,7 @@
 #!/usr/bin/env sh
 
 # The original script is incredibly brittle.
-# Instead, it has been replacd with code that simply outputs the generated file.
-# The generated file was originally obtained by:-
-# 1. Downloading `MLNX_OFED_LINUX-4.3-1.0.1.0-ubuntu18.04-x86_64.tgz`
-# 2. Extracting using tar --extract --gzip --file MLNX_OFED_LINUX-4.3-1.0.1.0-ubuntu18.04-x86_64.tgz
-# 3. ar -x `DEBS/libmlx5-dev_41mlnx1-OFED.4.3.0.2.1.43101_amd64.deb` data.tar.xz
-# 4. mkdir
-# 4. tar --extract --file --xz data.tar.xz
-#
+# Instead, it has been replacd with code that simply copies the generated file.
 
 
 set -e
@@ -81,15 +74,7 @@ _program_path_find()
     fi
 }
 
-extra()
-{
-	if [ -z "${CARGO_MANIFEST_DIR+is_unset}" ]; then
-		export CARGO_MANIFEST_DIR="$homeFolderPath"
-		printf 'build-under-cargo:%s\n' "Whilst this script (compile) is designed to be run under cargo, it can run independently. We're setting CARGO_MANIFEST_DIR to '$CARGO_MANIFEST_DIR'" 1>&2
-	fi
-}
-
-original()
+main()
 {
 	local programFolderPath="$(_program_path_find)"
 	
@@ -99,3 +84,5 @@ original()
 	
 	cp "$programFolderPath"/mlx5_hw.h "$output_file"
 }
+
+main "$@"

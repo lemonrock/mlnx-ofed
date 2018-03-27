@@ -1,1 +1,3 @@
 ibv_.*
+copy_query_dev_fields
+verbs_.*

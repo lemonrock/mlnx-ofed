@@ -3,3 +3,5 @@
 
 
 #include "infiniband/verbs_exp.h"
+#include "infiniband/driver_exp.h"
+#include "infiniband/peer_ops.h"

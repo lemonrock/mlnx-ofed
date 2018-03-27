@@ -9,3 +9,8 @@ clangAdditionalArguments="-I${DEP_MLNX_OFED_LIBIBVERBS_ROOT}/include"
 headersFolderPath='DESTDIR/usr/include'
 link='mlx5'
 link_kind='static-nobundle'
+
+final_chance_to_tweak()
+{
+	sed -i -e 's/#\[derive(Debug, Default, Copy, Clone, Hash)\]//g' "$outputFolderPath"/unions/mpw_data__bindgen_ty_1.rs
+}

@@ -6,7 +6,6 @@
 use ::std::env;
 use ::std::process::Command;
 
-
 fn main()
 {
 	let cargo_manifest_folder_path = variable("CARGO_MANIFEST_DIR");

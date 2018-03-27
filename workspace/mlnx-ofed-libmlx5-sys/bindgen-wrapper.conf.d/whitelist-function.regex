@@ -1,2 +1,2 @@
 mlx5_.*
-ibv_.*
+ibv_mlx5_.*

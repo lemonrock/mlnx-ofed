@@ -8,4 +8,19 @@
 #![feature(untagged_unions)]
 
 
+#[cfg(target_os = "linux")] extern crate mlnx_ofed_libibverbs_sys;
+
+
+use ::mlnx_ofed_libibverbs_sys::*;
+
+
+pub type __be16 = u16;
+pub type __be32 = u32;
+pub type __be64 = u64;
+pub type pthread_spinlock_t = c_int;
+
+
 #[cfg(target_os = "linux")] include!("bindgen/lib.rs");
+
+
+use ::libc::pthread_mutex_t;

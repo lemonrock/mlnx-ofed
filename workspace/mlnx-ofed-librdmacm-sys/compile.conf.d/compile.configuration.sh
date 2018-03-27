@@ -35,6 +35,13 @@ compile_library()
 
 		cd - 1>/dev/null 2>/dev/null
 	}
+	
+	compile_eradicate_libtools_la_archive_files()
+	{
+		set +f
+			find "$rootOutputFolderPath"/DESTDIR -type f -name '*.la' | xargs rm -rf
+		set -f
+	}
 
 	if [ -z "${DEP_MLNX_OFED_LIBIBVERBS_ROOT+is_unset}" ]; then
 		compile_fail 'Please specify the environment variable DEP_MLNX_OFED_LIBIBVERBS_ROOT which must point to a sys-root folder path containing an include and a lib folder'
@@ -45,6 +52,8 @@ compile_library()
 	compile_configure
 	
 	compile_make
+	
+	compile_eradicate_libtools_la_archive_files
 }
 
 cargo_key_value_pairs()

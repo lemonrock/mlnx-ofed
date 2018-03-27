@@ -1,0 +1,74 @@
+{
+	"llvm-target": "x86_64-unknown-linux-musl",
+	"target-endian": "little",
+	"target-pointer-width": "64",
+	"data-layout": "e-m:e-i64:64-f80:128-n8:16:32:64-S128",
+	"arch": "x86_64",
+	"os": "linux",
+	"env": "musl",
+	"vendor": "unknown",
+	"is-builtin": false,
+	"linker": "x86_64-linux-musl-cc",
+	"ar": "x86_64-linux-musl-ar",
+	"pre-link-args":
+	[
+		"-Wl,--as-needed",
+		"-Wl,-z,noexecstack",
+		"-nostdlib",
+		"-static",
+		"-Wl,--eh-frame-hdr",
+		"-Wl,-(",
+		"-m64"
+	],
+	"pre-link-objects-exe":
+	[
+		"crt1.0",
+		"crti.o"
+	],
+	"pre-link-objects-dll":
+	[
+	],
+	"late-link-args":
+	[
+	],
+	"post-link-objects":
+	[
+		"crtn.o"
+	],
+	"post-link-args":
+	[
+		"-Wl,-)"
+	],
+	"cpu": "silvermont",
+ 	"features": "+mmx,+sse,+sse-unaligned-mem,+sse2,+sse3,+ssse3,+sse4.1,+sse4.2,+popcnt,+avx,+aes,+pclmul,+rdrnd",
+	"dynamic-linking": false,
+	"executables": true,
+	"relocation-model": "pic",
+	"code-model": "default",
+	"disable-redzone": false,
+	"eliminate-frame-pointer": true,
+	"function-sections": true,
+	"dll-prefix": "lib",
+	"dll-suffix": ".so",
+	"exe-suffix": "",
+	"staticlib-prefix": "lib",
+	"staticlib-suffix": ".a",
+	"target-family": "unix",
+	"is-like-osx": false,
+	"is-like-solaris": false,
+	"is-like-windows": false,
+	"is-like-msvc": false,
+	"is-like-android": false,
+	"linker-is-gnu": true,
+	"has-rpath": false,
+	"no-default-libraries": true,
+	"position-independent-executables": false,
+	"archive-format": "gnu",
+	"allow-asm": true,
+	"custom-unwind-resume": false,
+	"lib-allocation-crate": "alloc_system",
+	"exe-allocation-crate": "alloc_system",
+	"has-elf-tls": true,
+	"obj-is-bitcode": false,
+	"max-atomic-width": 128
+}

@@ -1,0 +1,9 @@
+[submodule "workspace/mlnx-ofed-libibverbs-sys/tools/bindgen-wrapper"]
+	path = workspace/mlnx-ofed-libibverbs-sys/tools/bindgen-wrapper
+	url = https://github.com/lemonrock/bindgen-wrapper
+[submodule "workspace/mlnx-ofed-libmlx5-sys/tools/bindgen-wrapper"]
+	path = workspace/mlnx-ofed-libmlx5-sys/tools/bindgen-wrapper
+	url = https://github.com/lemonrock/bindgen-wrapper
+[submodule ".cargo"]
+	path = .cargo
+	url = https://github.com/lemonrock/.cargo

@@ -1,0 +1,275 @@
+#!/usr/bin/env sh -e
+# This file is part of mlnx-ofed-libibverbs. It is subject to the license terms in the COPYRIGHT file found in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/mlnx-ofed-libibverbs/master/COPYRIGHT. No part of mlnx-ofed-libibverbs, including this file, may be copied, modified, propagated, or distributed except according to the terms contained in the COPYRIGHT file.
+# Copyright © 2018 The developers of mlnx-ofed-libibverbs. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/mlnx-ofed-libibverbs/master/COPYRIGHT.
+
+
+set -e
+set -u
+set -f
+
+_program_path_find()
+{
+    if [ "${_program_fattening_program_path+set}" = 'set' ]; then
+        printf '%s\n' "$_program_fattening_program_path"
+
+    elif [ "${0%/*}" = "$0" ]; then
+
+        # We've been invoked by the interpreter as, say, bash program
+        if [ -r "$0" ]; then
+            pwd -P
+        # Clutching at straws; probably run via a download, anonymous script, etc, weird execve, etc
+        else
+            printf '\n'
+        fi
+
+    else
+
+        # We've been invoked with a relative or absolute path (also when invoked via PATH in a shell)
+
+        _program_path_find_parentPath()
+        {
+            parentPath="${scriptPath%/*}"
+            if [ -z "$parentPath" ]; then
+                parentPath='/'
+            fi
+            cd "$parentPath" 1>/dev/null
+        }
+
+        # pdksh / mksh have problems with unsetting a variable that was never set...
+        if [ "${CDPATH+set}" = 'set' ]; then
+            unset CDPATH
+        fi
+
+        if command -v realpath 1>/dev/null 2>/dev/null; then
+            (
+                scriptPath="$(realpath "$0")"
+
+                _program_path_find_parentPath
+                pwd -P
+            )
+        elif command -v readlink 1>/dev/null 2>/dev/null; then
+            (
+                scriptPath="$0"
+
+                while [ -L "$scriptPath" ]
+                do
+                    _program_path_find_parentPath
+                    scriptPath="$(readlink "$scriptPath")"
+                done
+
+                _program_path_find_parentPath
+                pwd -P
+            )
+        else
+            # This approach will fail in corner cases where the script itself is a symlink in a path not parallel with the concrete script
+            (
+                scriptPath="$0"
+
+                _program_path_find_parentPath
+                pwd -P
+            )
+        fi
+
+    fi
+}
+
+run_after_git_checkout_setPaths()
+{
+	programFolderPath="$(_program_path_find)"
+	
+	cd "$programFolderPath" 1>/dev/null 2>/dev/null
+		rootFolderPath="$(pwd)"
+	cd - 1>/dev/null 2>/dev/null
+}
+
+run_after_git_checkout_createDownloadsFolderPath()
+{
+	downloadsFolderPath="$downloadsFolderPath"/temporary
+	mkdir -m 0700 -p "$downloadsFolderPath"
+	
+	extractedDistributionFolderPath="$downloadsFolderPath"/extracted-distribution
+	rm -rf "$extractedDistributionFolderPath"
+	
+	extractedSourcesFolderPath="$downloadsFolderPath"/extracted-sources
+	rm -rf "$extractedSourcesFolderPath"
+	
+	extractedTarballsFolderPath="$downloadsFolderPath"/extracted-tarballs
+	rm -rf "$extractedTarballsFolderPath"
+	
+	extractedDebianDevelopmentArchivesFolderPath="$downloadsFolderPath"/extracted-development-debian-archives
+	rm -rf "$extractedDebianDevelopmentArchivesFolderPath"
+}
+
+run_after_git_downloadMellanoxOfed()
+{
+	local variant="$1"
+	local linuxVariant="$2"
+
+	downloadedMlnxOfedDistributionTarGzipFilePath="$downloadsFolderPath"/MLNX_OFED_LINUX-"$variant"-"$linuxVariant"-x86_64.tgz
+	
+	if [ ! -f "$file" ]; then
+		cd "$downloadsFolderPath" 1>/dev/null 2>/dev/null
+			wget -c -q -nd http://www.mellanox.com/downloads/ofed/MLNX_OFED-"$variant"/MLNX_OFED_LINUX-"$variant"-"$linuxVariant"-x86_64.tgz -O "$downloadedMlnxOfedDistributionTarGzipFilePath"
+		cd - 1>/dev/null 2>/dev/null
+	fi
+	rm -rf 
+}
+
+run_after_git_checkout_untarAndUngzipDistribution()
+{
+	printf "Extracting tarball of tarball of source tarballs\n" 1>&2
+	
+	mkdir -m 0700 -p "$extractedDistributionFolderPath"
+	cd "$extractedDistributionFolderPath" 1>/dev/null 2>/dev/null
+	
+		tar --extract --gzip --file "$downloadedMlnxOfedDistributionTarGzipFilePath"
+		
+		set +f
+			set -- MLNX_OFED_LINUX-*
+		set -f
+		local extractedDistributionFolderName="$1"
+		
+	cd - 1>/dev/null 2>/dev/null
+	
+	ln -s "$extractedDistributionFolderName" "$extractedDistributionFolderPath"/current
+	
+	set +f
+		set -- "$extractedDistributionFolderPath"/current/src/MLNX_OFED_SRC-*.tgz
+	set -f
+	local sourcesTarGzipFilePath="$1"
+
+
+	printf "Extracting tarball of source tarballs\n" 1>&2
+
+	mkdir -m 0700 -p "$extractedSourcesFolderPath"
+	cd "$extractedSourcesFolderPath" 1>/dev/null 2>/dev/null
+	
+		tar --extract --gzip --file "$sourcesTarGzipFilePath"
+		
+		set +f
+			set -- MLNX_OFED_SRC-*
+		set -f
+		local extractedSourcesFolderName="$1"
+		
+	cd - 1>/dev/null 2>/dev/null
+	
+	ln -s "$extractedSourcesFolderName" "$extractedSourcesFolderPath"/current
+
+	mkdir -m 0700 -p "$extractedTarballsFolderPath"
+
+
+	printf "Extracting source tarballs\n" 1>&2
+	
+	local tarballFilePath
+	set +f
+	for tarballFilePath in "$extractedSourcesFolderPath"/current/SOURCES/*.orig.tar.gz
+	do
+		set -f
+		if [ ! -e "$tarballFilePath" ]; then
+			continue
+		fi
+		
+		local tarballBaseLikeName="${tarballFilePath%_*}"
+		local tarballName="${tarballBaseLikeName##*/}"
+		local extractedTarballFolderPath="$extractedTarballsFolderPath"/"$tarballName"
+		mkdir -m 0700 -p "$extractedTarballFolderPath"
+		
+		cd "$extractedTarballFolderPath" 1>/dev/null 2>/dev/null
+			
+			tar --extract --gzip --file "$tarballFilePath"
+			
+			set +f
+				set -- ${tarballName}-*
+			set -f
+
+			local extractedTarballFolderName="$1"
+			ln -s "$extractedTarballFolderName" current
+			
+		cd - 1>/dev/null 2>/dev/null
+		
+	done
+	set -f
+
+
+	printf "Extracting Debian development archives\n" 1>&2
+	
+	mkdir -m 0700 -p "$extractedDebianDevelopmentArchivesFolderPath"
+
+	
+	local debianDevelopmentArchiveFilePath
+	set +f
+	for debianDevelopmentArchiveFilePath in "$extractedDistributionFolderPath"/current/DEBS/*-dev*_amd64.deb
+	do
+		set -f
+		if [ ! -e "$debianDevelopmentArchiveFilePath" ]; then
+			continue
+		fi
+		
+		local debianDevelopmentArchiveBaseLikeName="${debianDevelopmentArchiveFilePath%-dev*}"
+		local debianDevelopmentArchiveName="${debianDevelopmentArchiveBaseLikeName##*/}"
+		local extractedDebianDevelopmentArchiveFolderPath="$extractedDebianDevelopmentArchivesFolderPath"/"$debianDevelopmentArchiveName"
+		mkdir -m 0700 -p "$extractedDebianDevelopmentArchiveFolderPath"
+		cp "$debianDevelopmentArchiveFilePath" "$extractedDebianDevelopmentArchiveFolderPath"
+		
+		cd "$extractedDebianDevelopmentArchiveFolderPath" 1>/dev/null 2>/dev/null
+			
+			local fileName="${debianDevelopmentArchiveFilePath##*/}"
+			ar x "$fileName" data.tar.xz
+			rm "$fileName"
+			
+			tar --extract --xz --file data.tar.xz
+			rm data.tar.xz
+			
+		cd - 1>/dev/null 2>/dev/null
+		
+	done
+	set -f
+}
+
+run_after_git_checkout_install_library()
+{
+	local crate="$1"
+	local library="$2"
+	
+	printf "Installing library '%s' to crate '%s'\n" "$library" "$crate" 1>&2
+	
+	rm -rf "$rootFolderPath"/workspace/"$crate"/lib/"$library"
+	mkdir -m 0700 -p "$rootFolderPath"/workspace/"$crate"/lib/"$library"
+	rsync --quiet -a -v "$extractedTarballsFolderPath"/"$library"/current/ "$rootFolderPath"/workspace/"$crate"/lib/"$library"/
+}
+
+run_after_git_checkout_install_special()
+{
+	local crate="$1"
+	
+	printf "Installing mlx_hw.h file from libmlx5-dev .deb archive as the build script for this is broken\n" 1>&2
+	
+	cp "$extractedDebianDevelopmentArchivesFolderPath"/libmlx5/usr/include/infiniband/mlx5_hw.h "$rootFolderPath"/workspace/"$crate"/compile.conf.d/patches/scripts/expose_libmlx5_headers
+}
+
+run_after_git_checkout_main()
+{
+	local programFolderPath
+	local rootFolderPath
+	run_after_git_checkout_setPaths
+	
+	local downloadsFolderPath
+	local extractedDistributionFolderPath
+	local extractedSourcesFolderPath
+	local extractedTarballsFolderPath
+	local extractedDebianDevelopmentArchivesFolderPath
+	run_after_git_checkout_createDownloadsFolderPath
+
+	local downloadedMlnxOfedDistributionTarGzipFilePath
+	run_after_git_downloadMellanoxOfed '4.3-1.0.1.0' '4.3-1.0.1.0-ubuntu18.04-x86_64'
+	
+	run_after_git_checkout_untarAndUngzipDistribution
+	
+	
+	
+	run_after_git_checkout_install_library 'mlnx-ofed-libibverbs-sys' 'libibverbs'
+	run_after_git_checkout_install_library 'mlnx-ofed-libmlx5-sys' 'libmlx5'
+	run_after_git_checkout_install_special 'mlnx-ofed-libmlx5-sys'
+}
+
+run_after_git_checkout_main "$@"

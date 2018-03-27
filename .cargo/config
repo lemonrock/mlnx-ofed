@@ -1,0 +1,70 @@
+# This file is part of .cargo. It is subject to the license terms in the COPYRIGHT file found in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/.cargo/master/COPYRIGHT. No part of rust1, including this file, may be copied, modified, propagated, or distributed except according to the terms contained in the COPYRIGHT file.
+# Copyright © 2016 The developers of .cargo. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/.cargo/master/COPYRIGHT.
+
+[term]
+verbose = true
+color = "auto"
+
+[build]
+# Xargo / Cargo combination really doesn't like this
+#target-dir = ".cargo/target"
+
+[target.thumbv6m-none-eabi]
+linker = "arm-none-eabi-cc"
+ar = "arm-none-eabi-ar"
+
+[target.thumbv7m-none-eabi]
+linker = "arm-none-eabi-cc"
+ar = "arm-none-eabi-ar"
+
+[target.thumbv7em-none-eabi]
+linker = "arm-none-eabi-cc"
+ar = "arm-none-eabi-ar"
+
+[target.x86_64-unknown-linux-musl]
+linker = "x86_64-linux-musl-cc"
+ar = "x86_64-linux-musl-ar"
+
+[target.x86_64-unknown-linux-musl-westmere]
+linker = "x86_64-linux-musl-cc"
+ar = "x86_64-linux-musl-ar"
+
+[target.x86_64-unknown-linux-musl-sandybridge]
+linker = "x86_64-linux-musl-cc"
+ar = "x86_64-linux-musl-ar"
+
+[target.x86_64-unknown-linux-musl-ivybridge]
+linker = "x86_64-linux-musl-cc"
+ar = "x86_64-linux-musl-ar"
+
+[target.x86_64-unknown-linux-musl-haswell]
+linker = "x86_64-linux-musl-cc"
+ar = "x86_64-linux-musl-ar"
+
+[target.x86_64-unknown-linux-musl-broadwell]
+linker = "x86_64-linux-musl-cc"
+ar = "x86_64-linux-musl-ar"
+
+[target.x86_64-unknown-linux-musl-skylake]
+linker = "x86_64-linux-musl-cc"
+ar = "x86_64-linux-musl-ar"
+
+[target.x86_64-unknown-linux-musl-bonnell]
+linker = "x86_64-linux-musl-cc"
+ar = "x86_64-linux-musl-ar"
+
+[target.x86_64-unknown-linux-musl-silvermont]
+linker = "x86_64-linux-musl-cc"
+ar = "x86_64-linux-musl-ar"
+
+[target.x86_64-unknown-linux-musl-knl]
+linker = "x86_64-linux-musl-cc"
+ar = "x86_64-linux-musl-ar"
+
+[target.x86_64-unknown-linux-musl-skylake-avx512]
+linker = "x86_64-linux-musl-cc"
+ar = "x86_64-linux-musl-ar"
+
+[target.x86_64-unknown-linux-musl-barcelona]
+linker = "x86_64-linux-musl-cc"
+ar = "x86_64-linux-musl-ar"

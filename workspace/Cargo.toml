@@ -6,6 +6,7 @@
 members = [
 	"mlnx-ofed-libibverbs-sys",
 	"mlnx-ofed-libmlx5-sys",
+	"mlnx-ofed-librdmacm-sys",
 ]
 
 [profile.release]

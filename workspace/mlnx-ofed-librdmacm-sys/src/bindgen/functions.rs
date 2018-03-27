@@ -2,4 +2,4 @@
 // Copyright © 2016 The developers of mlnx-ofed. See the COPYRIGHT file in the top-level directory of this distribution and at https://raw.githubusercontent.com/lemonrock/mlnx-ofed/master/COPYRIGHT.
 
 
-pub type ibv_exp_create_qp_comp_mask = u32;
+include!("functions/miscellany.rs");

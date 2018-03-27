@@ -7,3 +7,6 @@
 [submodule ".cargo"]
 	path = .cargo
 	url = https://github.com/lemonrock/.cargo
+[submodule "workspace/mlnx-ofed-librdmacm-sys/tools/bindgen-wrapper"]
+	path = workspace/mlnx-ofed-librdmacm-sys/tools/bindgen-wrapper
+	url = https://github.com/lemonrock/bindgen-wrapper

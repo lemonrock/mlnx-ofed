@@ -5,3 +5,6 @@
 #include "infiniband/verbs_exp.h"
 #include "infiniband/driver_exp.h"
 #include "infiniband/peer_ops.h"
+#include "infiniband/sa.h"
+#include "infiniband/sa-kern-abi.h"
+#include "infiniband/kern-abi_exp.h"

@@ -9,5 +9,6 @@ include!("constants/IBV_EXP_LINK_LAYER.rs");
 include!("constants/IBV_EXP_QUERY_PORT.rs");
 include!("constants/IBV_EXP_RX_HASH_INNER.rs");
 include!("constants/IBV_LINK_LAYER.rs");
+include!("constants/IBV_PATH_RECORD.rs");
 include!("constants/IBV_SYSFS.rs");
 include!("constants/miscellany.rs");

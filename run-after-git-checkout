@@ -272,6 +272,8 @@ run_after_git_checkout_main()
 	
 	run_after_git_checkout_install_library 'mlnx-ofed-libibverbs-sys' 'libibverbs'
 	run_after_git_checkout_install_library 'mlnx-ofed-libmlx5-sys' 'libmlx5'
+	run_after_git_checkout_install_library 'mlnx-ofed-librdmacm-sys' 'librdmacm'
+	
 	run_after_git_checkout_install_special 'mlnx-ofed-libmlx5-sys'
 }
 

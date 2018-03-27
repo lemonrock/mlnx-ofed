@@ -84,7 +84,7 @@ run_after_git_checkout_setPaths()
 
 run_after_git_checkout_createDownloadsFolderPath()
 {
-	downloadsFolderPath="$downloadsFolderPath"/temporary
+	downloadsFolderPath="$rootFolderPath"/downloads
 	mkdir -m 0700 -p "$downloadsFolderPath"
 	
 	extractedDistributionFolderPath="$downloadsFolderPath"/extracted-distribution
@@ -105,11 +105,14 @@ run_after_git_downloadMellanoxOfed()
 	local variant="$1"
 	local linuxVariant="$2"
 
-	downloadedMlnxOfedDistributionTarGzipFilePath="$downloadsFolderPath"/MLNX_OFED_LINUX-"$variant"-"$linuxVariant"-x86_64.tgz
+	downloadedMlnxOfedDistributionTarGzipFilePath="$downloadsFolderPath"/MLNX_OFED_LINUX-"$linuxVariant".tgz
 	
-	if [ ! -f "$file" ]; then
+	if [ ! -f "$downloadedMlnxOfedDistributionTarGzipFilePath" ]; then
+
+		printf "Downloading tarball of tarball of source tarballs\n" 1>&2
+		
 		cd "$downloadsFolderPath" 1>/dev/null 2>/dev/null
-			wget -c -q -nd http://www.mellanox.com/downloads/ofed/MLNX_OFED-"$variant"/MLNX_OFED_LINUX-"$variant"-"$linuxVariant"-x86_64.tgz -O "$downloadedMlnxOfedDistributionTarGzipFilePath"
+			wget -c -nd http://www.mellanox.com/downloads/ofed/MLNX_OFED-"$variant"/MLNX_OFED_LINUX-"$linuxVariant".tgz -O "$downloadedMlnxOfedDistributionTarGzipFilePath"
 		cd - 1>/dev/null 2>/dev/null
 	fi
 	rm -rf 

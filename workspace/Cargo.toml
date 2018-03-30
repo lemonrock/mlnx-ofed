@@ -5,6 +5,7 @@
 [workspace]
 members = [
 	"mlnx-ofed-libibverbs-sys",
+	"mlnx-ofed-libmlx4-sys",
 	"mlnx-ofed-libmlx5-sys",
 	"mlnx-ofed-librdmacm-sys",
 ]

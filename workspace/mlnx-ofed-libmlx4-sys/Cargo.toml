@@ -3,9 +3,9 @@
 
 
 [package]
-name = "mlnx-ofed-libmlx5-sys"
-description = "Low-level FFI bindings to the C-library Mellanox OFED libmlx5"
-keywords = ["Mellanox", "OFED", "InfiniBand", "libmlx5", "mlx5"]
+name = "mlnx-ofed-libmlx4-sys"
+description = "Low-level FFI bindings to the C-library Mellanox OFED libmlx4"
+keywords = ["Mellanox", "OFED", "InfiniBand", "libmlx4", "mlx4"]
 categories = ["external-ffi-bindings"]
 license = "MIT"
 authors = ["Raphael Cohn <raphael.cohn@stormmq.com>"]

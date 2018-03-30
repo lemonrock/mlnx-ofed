@@ -1,2 +1,2 @@
 # Created by ./run-me-after-git-checkout
-patches/scripts/expose_libmlx5_headers/mlx5_hw.h
+patches/include/mlx4dv.h

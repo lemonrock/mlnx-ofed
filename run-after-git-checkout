@@ -241,12 +241,23 @@ run_after_git_checkout_install_library()
 	rsync --quiet -a -v "$extractedTarballsFolderPath"/"$library"/current/ "$rootFolderPath"/workspace/"$crate"/lib/"$library"/
 }
 
-run_after_git_checkout_install_special()
+run_after_git_checkout_install_special_mlx4()
 {
-	local crate="$1"
+	local crate='mlnx-ofed-libmlx4-sys'
+	
+	printf "Installing mlx4dv.h file from rdma-core source as this is missing in libmlx4 sources\n" 1>&2
+	
+	mkdir -m 0700 -p "$rootFolderPath"/workspace/"$crate"/compile.conf.d/patches/include
+	cp "$extractedTarballsFolderPath"/rdma-core/current/providers/mlx4/mlx4dv.h "$rootFolderPath"/workspace/"$crate"/compile.conf.d/patches/include
+}
+
+run_after_git_checkout_install_special_mlx5()
+{
+	local crate='mlnx-ofed-libmlx5-sys'
 	
 	printf "Installing mlx_hw.h file from libmlx5-dev .deb archive as the build script for this is broken\n" 1>&2
 	
+	mkdir -m 0700 -p "$rootFolderPath"/workspace/"$crate"/compile.conf.d/patches/scripts
 	cp "$extractedDebianDevelopmentArchivesFolderPath"/libmlx5/usr/include/infiniband/mlx5_hw.h "$rootFolderPath"/workspace/"$crate"/compile.conf.d/patches/scripts/expose_libmlx5_headers
 }
 
@@ -275,7 +286,9 @@ run_after_git_checkout_main()
 	run_after_git_checkout_install_library 'mlnx-ofed-libmlx4-sys' 'libmlx4'
 	run_after_git_checkout_install_library 'mlnx-ofed-librdmacm-sys' 'librdmacm'
 	
-	run_after_git_checkout_install_special 'mlnx-ofed-libmlx5-sys'
+	run_after_git_checkout_install_special_mlx4
+	
+	run_after_git_checkout_install_special_mlx5
 }
 
 run_after_git_checkout_main "$@"

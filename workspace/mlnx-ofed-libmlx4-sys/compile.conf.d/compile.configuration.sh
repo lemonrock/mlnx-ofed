@@ -43,6 +43,12 @@ compile_library()
 		set -f
 	}
 	
+	compile_copy_mlx4dv_header()
+	{
+		mkdir -m 0700 -p "$rootOutputFolderPath"/DESTDIR/usr/include
+		cp "$rootOutputFolderPath"/include/mlx4dv.h "$rootOutputFolderPath"/DESTDIR/usr/include
+	}
+	
 	if [ -z "${DEP_LIBNUMA_ROOT+is_unset}" ]; then
 		compile_fail 'Please specify the environment variable DEP_LIBNUMA_ROOT which must point to a sys-root folder path containing an include and a lib folder'
 	fi
@@ -56,6 +62,8 @@ compile_library()
 	compile_configure
 	
 	compile_make
+	
+	compile_copy_mlx4dv_header
 	
 	compile_eradicate_libtools_la_archive_files
 }

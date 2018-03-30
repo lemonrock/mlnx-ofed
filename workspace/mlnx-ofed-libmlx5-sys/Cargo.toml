@@ -20,7 +20,7 @@ build = "src/build.rs"
 links = "mlnx-ofed-libmlx5"
 
 [dependencies]
-libnuma-sys = "0.0.8"
+libnuma-sys = "0.0.9"
 mlnx-ofed-libibverbs-sys = "0.0.6"
 
 [target.'cfg(target_os = "linux")'.dependencies]

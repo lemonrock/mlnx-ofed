@@ -45,8 +45,8 @@ compile_library()
 	
 	compile_copy_mlx4dv_header()
 	{
-		mkdir -m 0700 -p "$rootOutputFolderPath"/DESTDIR/usr/include
-		cp "$rootOutputFolderPath"/include/mlx4dv.h "$rootOutputFolderPath"/DESTDIR/usr/include
+		mkdir -m 0700 -p "$rootOutputFolderPath"/DESTDIR/usr/include/infiniband
+		cp "$rootOutputFolderPath"/include/infiniband/mlx4dv.h "$rootOutputFolderPath"/DESTDIR/usr/include/infiniband
 	}
 	
 	if [ -z "${DEP_LIBNUMA_ROOT+is_unset}" ]; then

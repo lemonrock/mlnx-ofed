@@ -15,12 +15,12 @@ exclude = ["*"]
 include = ["README.md", "LICENSE", "COPYRIGHT", "src/**/*.rs", "Cargo.toml", "rustfmt.toml", "clippy.toml", "lib/**/*", "src/**/*.h", "tools/**/*", "bindgen-wrapper.conf.d/**/*", "compile.conf.d/**/*"]
 readme = "README.md"
 publish = true
-version = "0.0.5"
+version = "0.0.6"
 build = "src/build.rs"
 links = "mlnx-ofed-librdmacm"
 
 [dependencies]
-mlnx-ofed-libibverbs-sys = "0.0.5"
+mlnx-ofed-libibverbs-sys = "0.0.6"
 
 [target.'cfg(target_os = "linux")'.dependencies]
 libc = "0.2"

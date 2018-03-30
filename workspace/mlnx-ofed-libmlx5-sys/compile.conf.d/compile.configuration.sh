@@ -21,7 +21,7 @@ compile_library()
 			
 			CPPFLAGS="-I${DEP_LIBNUMA_ROOT}/include -I${DEP_MLNX_OFED_LIBIBVERBS_ROOT}/include" \
 			LDFLAGS="-L${DEP_LIBNUMA_ROOT}/lib -L${DEP_MLNX_OFED_LIBIBVERBS_ROOT}/lib" \
-			./configure --prefix=/usr --host="$configureHost" --disable-shared --enable-static --disable-dependency-tracking --disable-silent-rules --enable-fast-install
+			./configure --prefix=/usr --host="$configureHost" --disable-shared --enable-static --disable-dependency-tracking --disable-silent-rules --enable-fast-install --with-sysroot='yes'
 
 		cd - 1>/dev/null 2>/dev/null
 	}

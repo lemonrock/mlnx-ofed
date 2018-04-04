@@ -247,8 +247,8 @@ run_after_git_checkout_install_special_mlx4()
 	
 	printf "Installing mlx4dv.h file from rdma-core source as this is missing in libmlx4 sources\n" 1>&2
 	
-	mkdir -m 0700 -p "$rootFolderPath"/workspace/"$crate"/compile.conf.d/patches/include
-	cp "$extractedTarballsFolderPath"/rdma-core/current/providers/mlx4/mlx4dv.h "$rootFolderPath"/workspace/"$crate"/compile.conf.d/patches/include
+	mkdir -m 0700 -p "$rootFolderPath"/workspace/"$crate"/compile.conf.d/patches/include/infiniband
+	cp "$extractedTarballsFolderPath"/rdma-core/current/providers/mlx4/mlx4dv.h "$rootFolderPath"/workspace/"$crate"/compile.conf.d/patches/include/infiniband
 }
 
 run_after_git_checkout_install_special_mlx5()
